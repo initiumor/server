@@ -510,6 +510,7 @@ setup_apparmor() {
   log 'Setting up AppArmor'
 
   echo 'write-cache' | sudo tee -a /etc/apparmor/parser.conf
+  echo 'cache-loc /etc/apparmor/earlypolicy/' | sudo tee -a /etc/apparmor/parser.conf
   echo 'Optimize=compress-fast' | sudo tee -a /etc/apparmor/parser.conf
 
   mkdir -p /etc/systemd/system/haveged.service.d
