@@ -262,10 +262,10 @@ net.ipv4.conf.default.send_redirects = 0
 net.ipv6.conf.all.accept_ra = 0
 net.ipv6.conf.default.accept_ra = 0
 
-# Disable TCP SACK
-net.ipv4.tcp_sack = 0
-net.ipv4.tcp_dsack = 0
-net.ipv4.tcp_fack = 0
+# Enable TCP SACK
+net.ipv4.tcp_sack = 1
+net.ipv4.tcp_dsack = 1
+net.ipv4.tcp_fack = 1
 
 # Log packets with impossible addresses for security
 net.ipv4.conf.all.log_martians = 1
