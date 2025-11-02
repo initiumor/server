@@ -224,7 +224,7 @@ net.ipv4.tcp_keepalive_probes = 6
 net.ipv4.tcp_mtu_probing = 1
 
 # Increase the Ephemeral port range
-net.ipv4.ip_local_port_range = 30000 65535
+net.ipv4.ip_local_port_range = 10000 65535
 
 # TCP/IP stack hardening
 # TCP SYN cookie protection
