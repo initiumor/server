@@ -182,6 +182,9 @@ EOF
 setup_network() {
   log 'Setting up network'
 
+  local mem_total_kb=$(grep MemTotal /proc/meminfo | awk '{print $2}')
+  local buf_bytes=$((mem_total_kb * 5 / 100 * 1024))
+
   cat <<EOF >/etc/sysctl.d/50-network.conf
 ###################################################################
 # Improving performance
@@ -191,15 +194,15 @@ net.core.netdev_max_backlog = 16384
 # Increase the maximum connections
 net.core.somaxconn = 8192
 # Increase the memory dedicated to the network interfaces
-net.core.rmem_max = 16777216
-net.core.wmem_max = 16777216
+net.core.rmem_max = ${buf_bytes}
+net.core.wmem_max = ${buf_bytes}
 net.core.rmem_default = 1048576
 net.core.wmem_default = 1048576
 net.core.optmem_max = 65536
-net.ipv4.tcp_rmem = 4096 1048576 2097152
-net.ipv4.tcp_wmem = 4096 65536 16777216
-net.ipv4.udp_rmem_min = 8192
-net.ipv4.udp_wmem_min = 8192
+net.ipv4.tcp_rmem = 4096 1048576 ${buf_bytes}
+net.ipv4.tcp_wmem = 4096 65536 ${buf_bytes}
+net.ipv4.udp_rmem_min = 16384
+net.ipv4.udp_wmem_min = 16384
 
 # Enable BBR
 net.core.default_qdisc = fq
@@ -269,6 +272,9 @@ net.ipv4.tcp_fack = 1
 
 # Log packets with impossible addresses for security
 net.ipv4.conf.all.log_martians = 1
+
+# Low-watermark for unsent data in the kernel's send buffer
+net.ipv4.tcp_notsent_lowat = 16384
 EOF
 }
 
